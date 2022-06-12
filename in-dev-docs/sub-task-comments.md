@@ -33,3 +33,4 @@ Task 0.03 - Ignore Object Files
 - a: created gitignore file
 - b: ignore executables and object files
 - c: commit changes to github
+- d: push changed
