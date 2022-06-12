@@ -21,6 +21,8 @@ Modern GPU's Specialise in the ability to render complex 3D forms out of triangl
 
 ### Programatic ###
 
+C++ requires a build script to be ran to compile the program, the compilation step needs to know which files are headers, source files and object files, the last stage requires the object files to be combined, to create an executable.
+
 The game logic is likely to be the same across all potential platforms, however, The Operating systems input API and Rendering API and constraints are likely to be where these diverge.
 
 I have good reasons to use C++ For this project, since it fulfills the requirement for a programming language, it doesn't do garbage collection, a task that could slow down the game, if I don't decide when memory should be free. I syntactically understand the programming language.
