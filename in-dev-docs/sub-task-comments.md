@@ -34,3 +34,5 @@ Task 0.03 - Ignore Object Files
 - b: ignore executables and object files
 - c: commit changes to github
 - d: push changed
+- e: forgot to add files, then added then and retried previous steps
+- f: task completed
