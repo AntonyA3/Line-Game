@@ -28,11 +28,21 @@
 #include <GL/glew.h>
 
 /*
-    [Tag] Initialse SDL and OpenGL
+    [Tag] Includes headers for DearImGui
+    [Notes] Depends include headers for SDL and GLEW
+*/
+#include "imgui.h"
+#include "imgui_impl_sdl.h"
+#include "imgui_impl_opengl3.h"
+
+
+/*
+    [Tag] Screen Size  and Name Definitions
     [Notes] Replace this with a config file property
 */
 #define SCREEN_WIDTH 640
 #define SCREEN_HEIGHT 480
+#define WINDOW_NAME "Line Runner Game and Editor"
 
 
 namespace Glof{
@@ -45,6 +55,7 @@ namespace Glof{
         SDL_Event event;
         while (SDL_PollEvent(&event))
         {
+            ImGui_ImplSDL2_ProcessEvent(&event);
             switch (event.type)
             {
             case SDL_QUIT:
@@ -76,7 +87,7 @@ int main(int argc, char const *argv[])
     SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3);
     SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 1);
 
-    window = SDL_CreateWindow("Voxel Editor Project", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, (int)screen_width, (int)screen_height,
+    window = SDL_CreateWindow(WINDOW_NAME, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, (int)screen_width, (int)screen_height,
                               SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE);
 
     if (!window)
@@ -98,18 +109,44 @@ int main(int argc, char const *argv[])
     }
 
     /*
+        [Tag] Initialse ImGui
+    */
+    IMGUI_CHECKVERSION();
+    ImGui::CreateContext(NULL);
+
+    ImGuiIO& io = ImGui::GetIO(); 
+    io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;
+    ImGui::StyleColorsDark(NULL);
+    ImGui_ImplSDL2_InitForOpenGL(window, gl_context);
+    ImGui_ImplOpenGL3_Init("#version 150");
+
+    /*
         [Tag] Render Loop
         [Notes] For tasks that occur everytime rendering needs to occur
     */
     while (true)
     {
-
         Glof::pollSDL();
 
+        ImGui_ImplOpenGL3_NewFrame();
+        ImGui_ImplSDL2_NewFrame();
+        ImGui::NewFrame();
+        bool show_demo_window = true;
+        if (show_demo_window){
+            ImGui::ShowDemoWindow(&show_demo_window);
+        }
+
+        // Main rendering Stage
         glViewport(0, 0, screen_width, screen_height);
         glClearColor(0.5f, 0.5, 0.5f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         
+        //ImGui Final Stage
+        ImGui::Render();
+        ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+
+        //Frame Swap
+        SDL_GL_SwapWindow(window);
     }
 
     return 0;

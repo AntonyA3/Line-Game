@@ -37,8 +37,20 @@ Task 0.03 - Ignore Object Files
 - e: forgot to add files, then added then and retried previous steps
 - f: task completed
 
-Task Initialise SDL -
+Task - Initialise SDL and GLEW 0.0.4
 a: copy and comment previous initialisations of SDL
 b: added SDL dependancy make file and capitalised variables
 c: define a default screen width and height
 d: Done and commited
+
+Task - Initialise ImGui 0.0.5
+a: copied imgui init from previous initialisation
+b: subtask: add vendor folder and copy the ImGui source files Inside, done
+c: subtask: Add the include and the source folders for ImGui into the MAKEFILE, done
+d: Create the demo window ImGui command
+e: rename the output exe
+f: create a make install-run command
+g: a new makefile that will include imgui files
+h: non conflicting names for object files : contraints
+i: var for individual src files
+h:  remove srcfiles 
