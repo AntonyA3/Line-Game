@@ -31,6 +31,9 @@ To prevent the program from becoming difficult to maintain, the code will have l
 
 If The game is to be ported to web, I would need to either transpile C++ code to javascript
 
+### Globals ###
+
+All global functions will be within the namespace Glof (Global Functions), to prevent any name collision
 ### Reducing Decoupling ###
 
 The rendering will be entirely seperate from the game logic. Any rendering system for the game will need to be able to interprete commands, for drawing 3D and 2D game objects.

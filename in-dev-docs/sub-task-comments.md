@@ -36,3 +36,9 @@ Task 0.03 - Ignore Object Files
 - d: push changed
 - e: forgot to add files, then added then and retried previous steps
 - f: task completed
+
+Task Initialise SDL -
+a: copy and comment previous initialisations of SDL
+b: added SDL dependancy make file and capitalised variables
+c: define a default screen width and height
+d: Done and commited
