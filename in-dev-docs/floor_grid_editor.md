@@ -1,0 +1,5 @@
+- I have made it possible to edit some floor grid properties, however I need to be able to edit more properties.
+- edit position
+- edit row vector
+- edit column vector
+- edit the other properties

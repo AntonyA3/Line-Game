@@ -54,3 +54,30 @@ g: a new makefile that will include imgui files
 h: non conflicting names for object files : contraints
 i: var for individual src files
 h:  remove srcfiles 
+
+Task Initialise GDB 0.06 - 
+a: Copy launch config from previous project, but change some things
+b: done
+c: maybe I should Actually put the tasks on a kanban board, but create the labels according to my schema
+
+Task 0.07 -Hello Triangle 2D
+a: create an init function to generate 3 verticies of the triangle
+b: follow this design for hello triangle vertex layout
+
+![Hello Triangle Design](../in-dev-docs/images/hello_triangle.png)
+c: (3 (position) + 3(color) = 6) * 3(vertex count) = 18 floats
+d: initialise vertex buffer and index buffer
+e: gen the vertex buffer and index buffer
+f: write a vertex shader that read untransformed verticies 
+g: write a vertex shader that takes a colour the  outputs it
+h: compile the shader
+i: render the triangle
+j: Shaders failed to compile but I have the triangle
+k: shader work but it still failed to render as a red triangle, I removed [layout(location = 0)  from ("layout(location = 0) out vec4 color;\n")]
+l: try to do the task of clearing all object files and exe files, then Recompile
+m: I forgot to create the program
+n: task complet now commit;
+
+Task 0.08 - Update Make File With Clean
+a: as part of task 0.07 I implemented the clean rule in the makefile, it remove all object files and also the executable
+
