@@ -12,7 +12,7 @@
 #include <vector>
 #include <array>
 #include <stack>
-#include <map>
+#include <unordered_map>
 #include <set>
 #include <optional>
 #include <deque>
@@ -94,6 +94,82 @@ class MeshModel{
     }
 };
 
+// [Tag] Grid Classes
+// [Description] Contains the properties of a grid and the observer that remodels the grid if changed is true;
+// [Notes] Uses a graph of Fresh flag to manage it's invariants
+
+
+class Grid
+{
+
+    bool changed;
+    glm::vec3 position, row_vector, column_vector;
+    int row_count, column_count;
+
+    void onChanged(){
+        this->changed = true;
+    }
+
+public:
+
+    Grid(){
+        this->changed = true;
+    }
+
+    void setPosition(glm::vec3 position){
+        this->position = position;
+        this->onChanged();
+    }
+
+    void setRowVector(glm::vec3 row_vector){
+        this->row_vector = row_vector;
+        this->onChanged();
+    }
+
+    void setColumnVector(glm::vec3 column_vector){
+        this->column_vector = column_vector;
+        this->onChanged();
+    }
+
+    void setRowCount(int row_count){
+        this->row_count = row_count;
+        this->onChanged();
+    }
+
+    void setColumnCount(int column_count){
+        this->column_count = column_count;
+        this->onChanged();
+    }
+    
+    glm::vec3 getPosition(){
+        return this->position;
+    }
+
+    glm::vec3 getRowVector(){
+        return this->row_vector;
+    }
+
+    glm::vec3 getColumnVector(){
+        return this->column_vector;
+    }
+
+    int getRowCount(){
+        return this->row_count;    
+    }
+
+    int getColumnCount(){
+        return this->column_count; 
+    }
+    
+    void reset(){
+        this->changed = false;
+    }
+
+    bool isChanged(){
+        return this->changed;
+    }
+};
+
 
 // [Tag] Player Class
 // [Description] Contains the properties of the Games player object
@@ -151,107 +227,89 @@ class LineModel{
     }
 };
 
-class LineModelRepo{
-    std::vector<LineModel> line_models;
 
+// [Tag] A template for creating classes that are Repo's
+// [Note] Any object in a repo must have a default constructor
+template<typename T> 
+class Repo{
+    std::vector<T> objects;
+    
     public: 
     int size(){
-        return line_models.size();
+        return objects.size();
     }
 
-    LineModel& getAt(int i){
-        return line_models.at(i);
+    T& getAt(int i){
+        return objects.at(i);
     }
 
     void insert(){
-        this->line_models.push_back(LineModel());
+        this->objects.push_back(T());
     }
 
-    void insert(LineModel line_model){
-        this->line_models.push_back(line_model);
+    void insert(T object){
+        this->objects.push_back(object);
     }
 
-    LineModel * refLast(){
-        return &line_models.at(line_models.size() - 1);
+    T * refLast(){
+        return &objects.at(objects.size() - 1);
     }
 };
+
+
+class LineModelRepo : public Repo<LineModel>{};
+class GridRepo : public Repo<Grid>{};
     
 
+// [Tag] The space that the player is able to traverse in the game
+// [Description] Contains the properties of the game's play area mechanic
+// Similar to the game blue spheres in sonic 3, whenever the player reaches a vertex on a Grid
+// The direction of the player either doesn't change of or the player rotates 90 degrees left or right to change the direction
+// This game is simuilar but diffrent, the sonic 3 blue sphere game used a 2D grid to do this, however my game has the same mechanic
+// however it does this in a spartial dimension. Therefore rather than a 3D grid, a graph based data structure where each node has 0 to 4 references to other nodes
+// or even use a grid on sections of the level that are completely in 2D
+// or have the player be made to either jump or fall onto a noter grid or graph
 
-// [Tag] Grid Classes
-// [Description] Contains the properties of a grid and the observer that remodels the grid if changed is true;
-// [Notes] Uses a graph of Fresh flag to manage it's invariants
+// [Note] The Reference grid and the game grid, both use the same datatype
+class PlaySpace{
 
+    class Graph{
+        class Node{
+            Node * north_con;
+            Node * south_con;
+            Node * east_con;
+            Node * west_con;
 
-class Grid
-{
+            bool hasWestCon(){
+                return this->west_con != NULL;
+            }
 
-    bool changed;
-    glm::vec3 position, row_vector, column_vector;
-    int row_count, column_count;
+            bool hasEastCon(){
+                return this->east_con != NULL;
+            }
 
-    void onChanged(){
-        this->changed = true;
+            bool hasNorthCon(){
+                return this->north_con != NULL;
+            }
+            bool hasSouthCon(){
+                return this->south_con != NULL;
+            }
+        };
+        std::vector<Node> nodes;
+
+    };
+
+    std::vector<Grid> grids;
+    std::vector<Graph> graphs;
+
+    void addGrid(Grid grid){
+        this->grids.push_back(grid);
     }
 
-public:
-
-    void setPosition(glm::vec3 position){
-        this->position = position;
-        this->onChanged();
-    }
-
-    void setRowVector(glm::vec3 row_vector){
-        this->row_vector = row_vector;
-        this->onChanged();
-    }
-
-    void setColumnVector(glm::vec3 column_vector){
-        this->column_vector = column_vector;
-        this->onChanged();
-    }
-
-    void setRowCount(int row_count){
-        this->row_count = row_count;
-        this->onChanged();
-    }
-
-    void setColumnCount(int column_count){
-        this->column_count = column_count;
-        this->onChanged();
-    }
     
-    glm::vec3 getPosition(){
-        return this->position;
-    }
-
-    glm::vec3 getRowVector(){
-        return this->row_vector;
-    }
-
-    glm::vec3 getColumnVector(){
-        return this->column_vector;
-    }
-
-    int getRowCount(){
-        return this->row_count;    
-    }
-
-    int getColumnCount(){
-        return this->column_count; 
-    }
-    
-    void resolveChange(){
-        this->changed = false;
-    }
-
-    bool isChanged(){
-        return this->changed;
-    }
 
 
 };
-
 
 // [Tag] Viewport Classes
 // [Description] Contains the properties of the viewport
@@ -295,11 +353,21 @@ class Viewport{
 
 
 
-struct GridModeller{
+class ReferenceGrid{
     Grid * grid;
     LineModel * line_model;
 
+    public:
     
+    void init(Grid * grid, LineModel * line_model){
+        this->grid = grid;
+        this->line_model = line_model;
+    }
+
+    Grid& getGrid(){
+        return *this->grid;
+    }
+
     void update(){
         if(grid->isChanged()){
             Grid& grid = *this->grid;
@@ -323,8 +391,6 @@ struct GridModeller{
                 point = point + grid.getRowVector() * (float)grid.getRowCount();
                 verticies.insert(verticies.end(), {point.x, point.y, point.z, 1.0f, 1.0f, 1.0f});
                 line_model.incrementLine();
-
-
             }
             glBindBuffer(GL_ARRAY_BUFFER, line_model.getVertexBuffer());
             glBufferData(GL_ARRAY_BUFFER, verticies.size() * sizeof(float), &verticies.at(0), GL_DYNAMIC_DRAW);
@@ -578,7 +644,7 @@ class ShaderProgram{
     int vertex_size;
     GLuint program;
     std::vector<VertexAttribute> attributes;
-    std::map<const char *, GLuint> uniform_attributes;
+    std::unordered_map<std::string, GLuint> uniform_attributes;
     public:
     void init(){
         this->program = glCreateProgram();
@@ -592,7 +658,7 @@ class ShaderProgram{
     }
 
     void addUniformAttribute(const char * name){
-        this->uniform_attributes.insert(std::pair<const char *, GLuint>(name, glGetUniformLocation(this->program, name)));
+        this->uniform_attributes.emplace(std::pair<std::string, GLuint>(std::string(name), glGetUniformLocation(this->getProgram(), name)));
     }
 
     GLuint getUniformLocation(const char * name){
@@ -932,9 +998,9 @@ int main(int argc, char const *argv[])
         }
     }    
     
-    GLuint view_mat_loc = glGetUniformLocation(flat_shader_program.getProgram(), "view_mat");
-    GLuint proj_mat_loc = glGetUniformLocation(flat_shader_program.getProgram(), "proj_mat");
-    GLuint model_mat_loc = glGetUniformLocation(flat_shader_program.getProgram(), "model_mat");
+    flat_shader_program.addUniformAttribute("view_mat");
+    flat_shader_program.addUniformAttribute("proj_mat");
+    flat_shader_program.addUniformAttribute("model_mat");
 
     // [Tag] Make Hell Triangle Mesh
     MeshModel hello_triangle_model;
@@ -1014,25 +1080,21 @@ int main(int argc, char const *argv[])
     line_models.insert();
     line_models.refLast()->init();
 
-    Grid floor_grid;
-    floor_grid.setPosition(glm::vec3(0, 0, 0));
-    floor_grid.setRowVector(glm::vec3(1, 0, 0));
-    floor_grid.setColumnVector(glm::vec3(0, 0, 1));
-    floor_grid.setRowCount(32);
-    floor_grid.setColumnCount(32);
+    GridRepo grids;
+    grids.insert();
+    grids.refLast()->reset();
+    grids.refLast()->setPosition(glm::vec3(0, 0, 0));
+    grids.refLast()->setRowVector(glm::vec3(1, 0, 0));
+    grids.refLast()->setColumnVector(glm::vec3(0, 0, 1));
+    grids.refLast()->setRowCount(32);
+    grids.refLast()->setColumnCount(32);
 
     // Initialise the Player
     Player player;
     player.setPosition(glm::vec3(10, 0, 0));
 
-    
-
-    GridModeller grid_modeller;
-    grid_modeller.grid = &floor_grid;
-    grid_modeller.line_model = line_models.refLast();
-   
-
-
+    ReferenceGrid floor_grid;
+    floor_grid.init(grids.refLast(), line_models.refLast());
     
     // [Tag] Initialised the Camera
     // [Notes] In the future, these might be set with Json
@@ -1207,31 +1269,33 @@ int main(int argc, char const *argv[])
         // [Notes] These should be put in a method to build the editor properties from a grid
 
         ImGui::Begin("Edit", NULL, 0);
+        
         if(ImGui::TreeNode("Grid")){
-            glm::vec3 position = floor_grid.getPosition();
-            glm::vec3 row_vector = floor_grid.getRowVector();
-            glm::vec3 column_vector = floor_grid.getColumnVector();
-            int row_count = floor_grid.getRowCount();
-            int column_count = floor_grid.getColumnCount();
+            Grid& fg = floor_grid.getGrid();
+            glm::vec3 position = fg.getPosition();
+            glm::vec3 row_vector = fg.getRowVector();
+            glm::vec3 column_vector = fg.getColumnVector();
+            int row_count = fg.getRowCount();
+            int column_count = fg.getColumnCount();
 
             if(ImGui::InputFloat3("Position", &position.x, "%.3f", 0)){
-                floor_grid.setPosition(position);
+                fg.setPosition(position);
             }
 
             if(ImGui::InputFloat3("Row Vector", &row_vector.x, "%.3f", 0)){
-                floor_grid.setRowVector(row_vector);
+                fg.setRowVector(row_vector);
             }
 
             if(ImGui::InputFloat3("Column Vector", &column_vector.x, "%.3f", 0)){
-                floor_grid.setColumnVector(column_vector);
+                fg.setColumnVector(column_vector);
             }
 
             if(ImGui::InputInt("Row Count", &row_count, 1, 8, 0)){
-                floor_grid.setRowCount(row_count);
+                fg.setRowCount(row_count);
             }
 
             if(ImGui::InputInt("Column Count", &column_count, 1, 8, 0)){
-                floor_grid.setColumnCount(column_count);
+                fg.setColumnCount(column_count);
             }
 
             ImGui::TreePop();
@@ -1242,7 +1306,7 @@ int main(int argc, char const *argv[])
         
         // [Tag] Update Grid Re modeller
         
-        grid_modeller.update();
+        floor_grid.update();
         
         // Main rendering Stage
         glViewport(0, 0, viewport.getWidth(), viewport.getHeight());
@@ -1252,13 +1316,13 @@ int main(int argc, char const *argv[])
         // [Tag] Render Hello Triangle
         flat_shader_program.use();
         hello_triangle_model.bindBuffers();
-        // flat_shader_program.setUniformMatrix("proj_mat", &camera.getProjectionMatrix()[0][0])
+
         // [Note] Not all shaders will have these properties
-        glUniformMatrix4fv(proj_mat_loc, 1, GL_FALSE, (GLfloat *)&camera.getProjectionMatrix()[0][0]);
-        glUniformMatrix4fv(view_mat_loc, 1, GL_FALSE, (GLfloat *)&camera.getViewMatrix()[0][0]);
+        flat_shader_program.setUniformMatrix("proj_mat", &camera.getProjectionMatrix()[0][0]);
+        flat_shader_program.setUniformMatrix("view_mat", &camera.getViewMatrix()[0][0]);
         {
             glm::mat4 identity = glm::mat4(1.0f);
-            glUniformMatrix4fv(model_mat_loc, 1, GL_FALSE, (GLfloat *)&identity[0][0]);
+            flat_shader_program.setUniformMatrix("model_mat", &identity[0][0]);
         }
 
         // [Note] Not all meshModels will have this vertex layout
@@ -1269,25 +1333,23 @@ int main(int argc, char const *argv[])
         // [Tag] Render cube model player place holder
         // [Note] This has been duplicated, maybe I should create a class called vertex layout
         cube_model.bindBuffers();
-        
-        glUniformMatrix4fv(model_mat_loc, 1, GL_FALSE, (GLfloat *)&player.getModelMatrix()[0][0]);
+        flat_shader_program.setUniformMatrix("model_mat", &player.getModelMatrix()[0][0]);
+
         flat_shader_program.useVertexAttributes();
         glDrawElements(GL_TRIANGLES, cube_model.getIndexCount(), GL_UNSIGNED_INT, 0);
 
 
         {
             glm::mat4 identity = glm::mat4(1.0f);
-            glUniformMatrix4fv(model_mat_loc, 1, GL_FALSE, (GLfloat *)&identity[0][0]);
+            flat_shader_program.setUniformMatrix("model_mat", &identity[0][0]);
         }
-
-
 
         // [Tag] Render Floor Grid
         for(int i = 0; i < line_models.size(); i++){
             
             glBindBuffer(GL_ARRAY_BUFFER, line_models.getAt(i).getVertexBuffer());
-            glUniformMatrix4fv(proj_mat_loc, 1, GL_FALSE, (GLfloat *)&camera.getProjectionMatrix()[0][0]);
-            glUniformMatrix4fv(view_mat_loc, 1, GL_FALSE, (GLfloat *)&camera.getViewMatrix()[0][0]);
+            flat_shader_program.setUniformMatrix("proj_mat", &camera.getProjectionMatrix()[0][0]);
+            flat_shader_program.setUniformMatrix("view_mat", &camera.getViewMatrix()[0][0]);
 
             flat_shader_program.useVertexAttributes();
 
