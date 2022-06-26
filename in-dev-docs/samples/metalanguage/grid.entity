@@ -1,0 +1,28 @@
+
+<Entity name=Grid>
+    <Type id=glm::vec3>
+        <Property name=position  ops=[get, set]>
+        <Property name=row_vector ops=[get, set]>
+        <Property name=column_vector ops=[get, set]>
+    </Type>
+    <Type id=int>
+        <Property name=row_count ops=[get, set]>
+        <Property name=column_count ops=[get, set]>
+    </Type>
+    <Type id=bool>
+        <Property name=changed ops=[is]>
+    </Type>
+
+    <Cons>
+        this->changed = false; 
+    </Cons>
+
+    <AfterAnySet>
+        this->changed = true;
+    </AfterAnySet>
+
+    <Method rtntype=void scope=public name=reset>
+        this->changed = false;
+    </Method>
+
+</Entity>
