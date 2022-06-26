@@ -156,102 +156,59 @@ class Grid{
    bool isChanged(){
      return this->changed;
    }
+
+   void reset(){
+     this->changed = false;
+   }
 };
-// class Grid
-// {
-//     bool changed;
-//     glm::vec3 position, row_vector, column_vector;
-//     int row_count, column_count;
+// [Tag] Player Class
+// [Description] Contains the properties of the Games player object
+// [Notes] In the future the player may not have a setter for position
 
-//     void onChanged(){
-//         this->changed = true;
-//     }
 
-// public:
+class Player{
 
-//     Grid(){
-//         this->changed = true;
-//     }
+  glm::vec3 position;
+  glm::mat4 model_matrix;
 
-//     void setPosition(glm::vec3 position){
-//         this->position = position;
-//         this->onChanged();
-//     }
+  public:
 
-//     void setRowVector(glm::vec3 row_vector){
-//         this->row_vector = row_vector;
-//         this->onChanged();
-//     }
 
-//     void setColumnVector(glm::vec3 column_vector){
-//         this->column_vector = column_vector;
-//         this->onChanged();
-//     }
+   void setPosition(glm::vec3 position){
+     this->position = position;
+   }
 
-//     void setRowCount(int row_count){
-//         this->row_count = row_count;
-//         this->onChanged();
-//     }
+   glm::vec3 getPosition(){
+     return this->position;
+   }
 
-//     void setColumnCount(int column_count){
-//         this->column_count = column_count;
-//         this->onChanged();
-//     }
+   glm::mat4 getModelMatrix(){
+     return this->model_matrix;
+   }
+
+   glm::mat4 getModelMatrix(){
+     this->model_matrix = glm::translate(glm::mat4(1.0f), this->position); return this->model_matrix;
+   }
+};
+// class Player{
+//     glm::vec3 position;
+//     glm::mat4 model_matrix;
     
+//     public:
 //     glm::vec3 getPosition(){
 //         return this->position;
 //     }
 
-//     glm::vec3 getRowVector(){
-//         return this->row_vector;
+//     void setPosition(glm::vec3 position){
+//         this->position = position;
 //     }
 
-//     glm::vec3 getColumnVector(){
-//         return this->column_vector;
+//     glm::mat4 getModelMatrix(){
+//         this->model_matrix = glm::translate(glm::mat4(1.0f), this->position);
+//         return this->model_matrix;
 //     }
 
-//     int getRowCount(){
-//         return this->row_count;    
-//     }
-
-//     int getColumnCount(){
-//         return this->column_count; 
-//     }
-    
-//     void reset(){
-//         this->changed = false;
-//     }
-
-//     bool isChanged(){
-//         return this->changed;
-//     }
 // };
-
-
-
-
-// [Tag] Player Class
-// [Description] Contains the properties of the Games player object
-// [Notes] In the future the player may not have a setter for position
-class Player{
-    glm::vec3 position;
-    glm::mat4 model_matrix;
-    
-    public:
-    glm::vec3 getPosition(){
-        return this->position;
-    }
-
-    void setPosition(glm::vec3 position){
-        this->position = position;
-    }
-
-    glm::mat4 getModelMatrix(){
-        this->model_matrix = glm::translate(glm::mat4(1.0f), this->position);
-        return this->model_matrix;
-    }
-
-};
 
 
 // [Tag] LineModel Class

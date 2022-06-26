@@ -27,7 +27,7 @@
     "cons": "this->changed = false;",
     "afterAnySet": "this->changed = true;", 
     "publicMethods": [
-        {"rtntype": "void", "scope" : "public", "name": "reset"}
+        {"rtntype": "void", "name": "reset", "code": "this->changed = false;"}
     ]
 }
 

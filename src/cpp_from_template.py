@@ -3,26 +3,34 @@ from entity_to_class import *
 
 
 
+import sys
+# f = open("src\\main.template.cpp", "r")
 
-f = open("src\\main.template.cpp", "r")
+files = sys.argv[1:]
 
-text = ""
-for line in f.readlines():
+def generateCppFiles(filePairs):
+    for i in range(0,len(filePairs) - 1, 2):
+        in_file = filePairs[i]
+        out_file = filePairs[i + 1]
+    
+        f = open(in_file, "r")
+        file_text = f.readlines()
+        f.close()
+
+        text = ""
+        for line in file_text:
+            if len(re.findall("( *)//( *)<[*]Entity[*]>(.*)", line)) > 0:
+                instruction = line.replace("//", "").replace("<*Entity*>", "").lstrip().rstrip().split(" ")
+                if instruction[0] == "class":
+                    code = MakeClass(getJson(instruction[1]))._text
+                    text += code
+            else:
+                text += line
 
 
-    if len(re.findall("( *)//( *)<[*]Entity[*]>(.*)", line)) > 0:
-        instruction = line.replace("//", "").replace("<*Entity*>", "").lstrip().rstrip().split(" ")
-        if instruction[0] == "class":
-            code = MakeClass(getJson(instruction[1]))._text
-            text += code
-    else:
-        text += line
-
-f.close()
-
-f = open("src_gen\\main.cpp", "w")
-f.write(text)
-f.close()
+        f = open(out_file, "w")
+        f.write(text)
+        f.close()
 
 # print(text)
 

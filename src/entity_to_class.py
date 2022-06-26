@@ -89,6 +89,24 @@ class MakeClass:
 
         return textList
 
+    # [Tag] I need to actually Consider methods with arguments
+    def makePublicFunc(self):
+        funcs = []
+        for method in self._entity["publicMethods"]:
+            func_def = {
+                "definition" : "{rtntype} {name}(){{".format(rtntype=method["rtntype"], name=method["name"]),
+                "code" : "{code}".format(code=method["code"])
+            }
+            funcs.append(func_def)
+        return funcs
+            
+            # "definition" :"bool is{funcSuffix}(){{".format(funcSuffix=snakeCaseToCamelCase(prop["name"])),
+            #             "code" : "return this->{argName};".format(argName=prop["name"])
+
+            # {"rtntype": "void", "name": "reset", "code": "this->changed = false;"}
+    
+
+
 
     def evalFunc(self, func):
         self._text += "\n   " + func["definition"] + "\n"
@@ -109,9 +127,12 @@ class MakeClass:
 
         self._text += "  public:\n\n"
 
-        self.evalFunc(self.makeConstructor())
+        if "cons" in self._entity:
+            self.evalFunc(self.makeConstructor())
+            
         self.evalFuncList(self.makeSetters())
         self.evalFuncList(self.makeGetters())
         self.evalFuncList(self.makeIssers())
+        self.evalFuncList(self.makePublicFunc())
         self._text += "};"
 
