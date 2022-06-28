@@ -1,3 +1,4 @@
+from copyreg import constructor
 from pydoc import classname
 import xml.etree.ElementTree as ET
 
@@ -18,6 +19,7 @@ class CppCodeGenerator:
         self._class_name = self._entity.get("name")
         self._private_properties_group = self._entity.findall("privateProperties/propGroup")
         self._private_properties = self._entity.findall("privateProperties/prop")
+        self._constructors = self._entity.find("constructors")
         self._init_method = self._entity.find("initMethod")
         self._public_methods = self._entity.findall("publicMethods/func")
         self._gettable_properties = []
@@ -78,6 +80,12 @@ class CppCodeGenerator:
 
 
         self._text += "public:\n"
+
+        if self._constructors is not None:
+            constuctors = self._constructors.findall("cons")
+            for cons in constuctors:
+                # [Note] Constructor should have arguments
+                self.makeMethod(cons, "", self._entity.get("name"))
 
         if self._init_method is not None :
             self.makeMethod(self._init_method, self._init_method.get("rtntype"), "init",)
