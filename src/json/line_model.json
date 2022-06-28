@@ -1,0 +1,17 @@
+
+
+{
+    "name": "LineModel",
+    "types":[
+        {"id" : "GLuint", "properties":["vertex_buffer"]},
+        {"id" : "int", "properties":["vertex_count"]}
+    ],
+    "init": "this->clear();\n glGenBuffers(1, &vertex_buffer);",
+
+    "increment_line": "this->vertex_count += 2;",
+    "get_vertex_count" : "return this->vertex_count;",
+    "get_vertex_buffer" : "return this->vertex_buffer;",
+    "clear" : "this->vertex_count = 0;"
+
+
+}

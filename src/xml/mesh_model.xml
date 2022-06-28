@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no" ?>
+<Entity name="MeshModel">
+    <privateProperties>
+        <propGroup type="GLuint">
+            <prop name="vertex_buffer"></prop>
+            <prop name="index_buffer"></prop>
+        </propGroup>
+        <prop type="int" name="index_count">
+            <get></get>
+        </prop>
+    </privateProperties>
+
+    <initMethod rtntype="void">
+        <code>
+            this->clear();
+            glGenBuffers(1, &amp;vertex_buffer);
+            glGenBuffers(1, &amp;index_buffer);
+        </code>
+    </initMethod>
+    <publicMethods>       
+        <func rtntype="void" name="clear">
+            <code>
+                this->index_count = 0;
+            </code>
+        </func>
+        <func rtntype="void" name="bindBuffers">
+            <code>
+                glBindBuffer(GL_ARRAY_BUFFER, this->vertex_buffer);
+                glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, this->index_buffer);
+            </code>
+        </func>
+        <func rtntype="void" name="remodel">
+            <arguments>
+                <param type="float*" name="verticies"></param>
+                <param type="int" name="verticies_count"></param>
+                <param type="unsigned int*" name="indicies"></param>
+                <param type="int" name="indicies_count"></param>
+            </arguments>
+            <code> 
+                glBufferData(GL_ARRAY_BUFFER, verticies_count * sizeof(float), verticies, GL_DYNAMIC_DRAW);
+                glBufferData(GL_ELEMENT_ARRAY_BUFFER, indicies_count * sizeof(unsigned int), indicies, GL_DYNAMIC_DRAW);
+                this->index_count = indicies_count;
+            </code>
+            
+        </func>
+    </publicMethods>
+</Entity>
+

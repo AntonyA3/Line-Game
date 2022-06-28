@@ -1,0 +1,26 @@
+
+
+
+
+{
+    "name": "Player",
+    "types":[
+        {
+            "id": "glm::vec3", 
+            "properties":[
+                {"name": "position", "ops": ["get", "set", "log"]}
+            ]
+        },
+        {
+            "id" : "glm::mat4",
+            "properties":[
+                {"name": "model_matrix", "ops": ["log"]}
+            ]
+        }
+    ],
+    "publicMethods": [
+        {"rtntype": "glm::mat4", "name": "getModelMatrix", "code": "this->model_matrix = glm::translate(glm::mat4(1.0f), this->position); return this->model_matrix;"}
+    ]
+}
+
+    

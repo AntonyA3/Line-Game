@@ -1,0 +1,48 @@
+
+
+{
+    "name": "Camera",
+    "types":[
+        {
+            "id": "glm::vec3", 
+            "properties":[
+                {"name": "position", "ops": ["get", "set", "log"]},
+                {"name": "rotation", "ops": ["get", "set", "log"]}
+            ]
+        },
+        {
+            "id": "float",
+            "properties":[
+                {"name": "aspect_ratio", "ops": ["get", "set", "log"]},
+                {"name": "fov", "ops": ["get", "set", "log"]},
+                {"name": "near", "ops": ["get", "set", "log"]},
+                {"name": "far", "ops": ["get", "set", "log"]}
+            ]
+
+        },
+        {
+            "id" : "glm::mat4",
+            "properties":[
+                {"name": "translation_mat", "ops": []},
+                {"name": "rotation_mat", "ops": []},
+                {"name": "transformation_mat", "ops": []},
+                {"name": "view_mat", "ops": []},
+                {"name": "projection_mat", "ops": []},
+                {"name": "projection_view_mat", "ops": []},
+                {"name": "inverse_projection_view_mat", "ops": []}
+            ]
+        },
+        {
+            "id" : "Freshness",
+            "properties":[
+                {"name": "translation_mat_fresh", "ops": []},
+                {"name": "rotation_mat_fresh", "ops": []},
+                {"name": "transformation_mat_fresh", "ops": []},
+                {"name": "view_mat_fresh", "ops": []},
+                {"name": "projection_mat_fresh", "ops": []}, 
+                {"name": "projection_view_mat_fresh", "ops": []},
+                {"name": "inverse_projection_view_mat_fresh", "ops": []}
+            ]
+        }
+    ]
+}

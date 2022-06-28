@@ -1,0 +1,20 @@
+{
+    "name": "InputButton",
+    "types": [
+        {
+            "id": "int",
+            "properties":[
+                {"name":"state",  "ops": ["get", "log"]}       
+            ]
+        },
+        {   
+            "id": "string",
+            "properties":[
+                {"name":"state_string"}
+            ]
+        }
+    ],
+    "publicMethods": [
+        {"rtntype": "std::string", "name": "reset", "code": "this->changed = false;"}
+    ]
+}

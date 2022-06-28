@@ -1,0 +1,36 @@
+
+{
+    "name:" : "MeshModel",
+    "properties" :[
+        {"scope": "private" , "type": "GLuint", "name" :  "vertex_buffer"},
+        {"scope": "private", "type": "GLuint", "name" :  "index_buffer"},
+        {"scope": "private", "type" : "int", "name" :  "index_count", "tags":["get"]}
+    ],
+    "init_method":{
+        "statements":[
+            "this->clear();",
+            "glGenBuffers(1, &vertex_buffer);",
+            "glGenBuffers(1, &index_buffer);"
+        ]      
+    },
+    "methods" :[
+ 
+        {"scope": "public", "rtntype":"void", "name":"clear", "statements":["this->index_count = 0;"]},
+        {"scope": "public", "rtntype":"void", "name":"bindBuffers", "statements":[
+            "glBindBuffer(GL_ARRAY_BUFFER, this->vertex_buffer);",
+            "glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, this->index_buffer);"
+        ]},
+        {"scope": "public", "rtntype":"void", "name": "remodel", "args" :[
+            {"type": "float*", "name": "verticies"},
+            {"type": "int", "name": "verticies_count"},
+            {"type": "unsigned int*", "name": "indicies"},
+            {"type": "int", "name": "indicies_count"}
+            ],
+            "statements":[
+                "glBufferData(GL_ARRAY_BUFFER, verticies_count * sizeof(float), verticies, GL_DYNAMIC_DRAW);",
+                "glBufferData(GL_ELEMENT_ARRAY_BUFFER, indicies_count * sizeof(unsigned int), indicies, GL_DYNAMIC_DRAW);",
+                "this->index_count = indicies_count;"
+            ]
+        }
+    ]
+}
